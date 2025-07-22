@@ -1,6 +1,6 @@
 ---
 - name: Run Lenovo Redfish Firmware Check
-  hosts: LenovoThinkSys
+  hosts: XCC01
   connection: local
   gather_facts: false
   vars:
