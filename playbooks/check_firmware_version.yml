@@ -10,7 +10,7 @@
   tasks:
     - name: Run Lenovo firmware inventory script
       ansible.builtin.command: >
-        python3 script/get_system_inventory.py
+        python3 script/get_fw_inventory.py
         -i {{ bmc_ip }}
         -u {{ ansible_user }}
         -p {{ ansible_password }}
@@ -20,14 +20,4 @@
       ansible.builtin.debug:
         var: result.stdout
         
-    - name: Run Lenovo firmware update check
-      ansible.builtin.command: >
-        python3 script/Lenovo_check_firmware.py
-        -i {{ bmc_ip }}
-        -u {{ ansible_user }}
-        -p {{ ansible_password }}
-      register: result
 
-    - name: Show output
-      ansible.builtin.debug:
-        var: result.stdout  
