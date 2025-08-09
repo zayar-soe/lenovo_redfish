@@ -6,17 +6,18 @@
 
   vars:
     datatype: FirmwareInventory
-
+    bmc_ip: 192.168.0.222
+    ansible_user: pptadmin
+    
   tasks:
-
 
   - name: Get firmware inventory
     redfish_info:
       category: Update
       command: GetFirmwareInventory
-      baseuri: "{{ baseuri }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      baseuri: "{{ bmc_ip }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
       timeout: 20
     register: result
 
