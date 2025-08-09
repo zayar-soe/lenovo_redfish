@@ -5,6 +5,10 @@
   gather_facts: False
 
   tasks:
+  - name: Wait 30 Mins before checking SSH
+    pause:
+       seconds: 1800
+       
   - name: Get original tasks
     command: python3 ../examples/get_all_tasks.py -i "{{ baseuri }}" -u "{{ username }}" -p "{{ password }}"
     register: result_task_org
