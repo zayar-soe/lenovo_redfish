@@ -9,8 +9,6 @@
 
   tasks:
 
-  - name: Define output file
-    include_tasks: create_output_file.yml
 
   - name: Get firmware inventory
     redfish_info:
@@ -44,7 +42,3 @@
 
   - debug: var=UEFIFWVersion
 
-  - name: Copy results to output file
-    copy:
-      content: "{{ result | to_nice_json }}"
-      dest: "{{ template }}.json"
