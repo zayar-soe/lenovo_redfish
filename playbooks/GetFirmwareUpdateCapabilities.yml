@@ -1,0 +1,28 @@
+---
+- hosts: XCC01
+  connection: local
+  name: Get firmware inventory
+  gather_facts: False
+
+  vars:
+    datatype: FirmwareInventory
+    bmc_ip: 192.168.0.222
+    ansible_user: pptadmin
+    
+  tasks:
+
+  - name: Get firmware UpdateCapabilities
+    redfish_info:
+      category: Update
+      command: GetFirmwareUpdateCapabilities
+      baseuri: "{{ bmc_ip }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+      timeout: 20
+    register: result
+  
+  - name: Show firmware update capabilities
+    debug:
+      var: result
+
+  
