@@ -1,5 +1,5 @@
 ---
-- hosts: myhosts
+- hosts: 
   connection: local
   name: Get firmware inventory
   gather_facts: False
