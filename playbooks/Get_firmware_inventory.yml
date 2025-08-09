@@ -1,0 +1,50 @@
+---
+- hosts: myhosts
+  connection: local
+  name: Get firmware inventory
+  gather_facts: False
+
+  vars:
+    datatype: FirmwareInventory
+
+  tasks:
+
+  - name: Define output file
+    include_tasks: create_output_file.yml
+
+  - name: Get firmware inventory
+    redfish_info:
+      category: Update
+      command: GetFirmwareInventory
+      baseuri: "{{ baseuri }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      timeout: 20
+    register: result
+
+  - name: Set var firmware_entries
+    set_fact:
+      firmware_entries: "{{ result.redfish_facts.firmware.entries }}"
+
+  - name: Get BMC firmware version
+    set_fact:
+      BMCFWVersion: "{{ [item.SoftwareId, item.Version] | join }}"
+    when: item.Id == 'BMC-Primary'
+    loop:
+      "{{ firmware_entries }}"
+
+  - debug: var=BMCFWVersion
+
+  - name: Get UEFI firmware version
+    set_fact:
+      UEFIFWVersion: "{{ [item.SoftwareId, item.Version] | join }}"
+    when: item.Id == 'UEFI'
+    loop:
+      "{{ firmware_entries }}"
+
+  - debug: var=UEFIFWVersion
+
+  - name: Copy results to output file
+    copy:
+      content: "{{ result | to_nice_json }}"
+      dest: "{{ template }}.json"
